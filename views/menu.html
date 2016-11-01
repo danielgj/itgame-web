@@ -1,0 +1,27 @@
+<div  ng-controller="MenuCtrl">
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">My IT Team Game</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-right">
+            <ul class="nav navbar-nav" ng-repeat="item in menu">
+                <li ng-if="item.url==='#logout'">
+                    <a ng-click="logoutModal()">{{item.label}}</a>
+                </li>
+                <li ng-if="item.url!='#logout'" ng-class="getClass('{{item.url}}')">
+                    <a href="{{item.url}}">{{item.label}}</a>
+                </li>                
+            </ul>
+          
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+</div>

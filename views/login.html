@@ -1,0 +1,44 @@
+	<!-- *****************************************************************************************************************
+	 BLUE WRAP
+	 ***************************************************************************************************************** -->
+	<div id="blue">
+	    <div class="container">
+			<div class="row">
+				<h3>Entra al juego</h3>
+			</div><!-- /row -->
+	    </div> <!-- /container -->
+	</div><!-- /blue -->
+
+	 <!-- *****************************************************************************************************************
+	 CONTACT FORMS
+	 ***************************************************************************************************************** -->
+
+	 <div class="container mtb">
+	 	<div class="row">
+            <div class="col-lg-2"></div>
+	 		<div class="col-lg-4">
+	 			<h4>Login</h4>
+                <div class="hline"></div>
+                <p>Introduce tu email de Unisys y tu contraseña.</p>
+                <div class="alert alert-danger" ng-show="withError">{{errorMsg}}</div>
+		 			<form role="form">
+					  <div class="form-group">
+					    <label for="email">Email</label>
+					    <input type="text" class="form-control" id="email" ng-model="login.email">
+					  </div>
+					  <div class="form-group">
+					    <label for="password">Contraseña</label>
+					    <input type="password" class="form-control" id="password" ng-model="login.password">
+                      </div>					  
+					  <a ng-click="doLogin()" class="btn btn-theme">Entrar</a>
+					</form>
+			</div><! --/col-lg-8 -->
+	 		<div class="col-lg-1"></div>
+	 		<div class="col-lg-3">
+		 		<p>¡Si aún no tienes cuenta regístrate!</p>
+                <a class="btn btn-theme" href="#register">Registro</a>
+	 		</div>
+            
+            <div class="col-lg-2"></div>
+	 	</div><! --/row -->
+	 </div><! --/container -->

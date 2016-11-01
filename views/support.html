@@ -1,0 +1,60 @@
+    <!-- *****************************************************************************************************************
+	 BLUE WRAP
+	 ***************************************************************************************************************** -->
+	<div id="blue">
+	    <div class="container">
+			<div class="row">
+				<h3>Soporte</h3>
+			</div><!-- /row -->
+	    </div> <!-- /container -->
+	</div><!-- /blue -->
+
+    <!-- *****************************************************************************************************************
+	 CONTACT FORMS
+	 ***************************************************************************************************************** -->
+
+	 <div class="container mtb">
+	 	<div class="row" ng-show="role=='player'">
+	 		<div class="col-lg-6">
+	 			<h4>Déjanos tu duda y la atenderemos lo antes posible</h4>
+                <div class="hline"></div>
+                <p>Estamos en proceso de construcción de la plataforma así que cualquier feedback será bien recibido.</p>	 			
+		 			<form role="form">
+					  <div class="form-group">
+					    <label for="InputSubject1">Asunto</label>
+					    <input type="email" class="form-control" id="subject">
+					  </divtext
+					  <div class="form-group">
+					  	<label for="message1">Mensaje</label>
+					  	<textarea class="form-control" id="message1" rows="3"></textarea>
+					  </div>
+					  <button type="submit" class="btn btn-theme">Enviar</button>
+					</form>
+			</div><! --/col-lg-6 -->
+            
+            <div class="col-lg-2"></div>
+            
+            <div class="col-lg-4">
+                <h4>¿Te ayudó algún compañero?</h4>
+                <div class="hline"></div>
+                <p>Si algún compañero te ayudó a resolver tu problema, indícalo aquí y le daremos una recompensa.</p>	 			
+		 			<form role="form">
+					  <div class="form-group">
+					    <label for="InputSubject1">Jugador</label>
+					    <input type="email" class="form-control" id="subject">
+					  </divtext
+					  <div class="form-group">
+					  	<label for="message1">Comentario</label>
+					  	<textarea class="form-control" id="message1" rows="3"></textarea>
+					  </div>
+					  <button type="submit" class="btn btn-theme">Agradecer</button>
+					</form>
+            </div>
+	 		
+	 		
+	 	</div><! --/row -->
+         
+        <div class="row" ng-show="role=='admin'">
+            Aquí resuelves los tickets abiertos.
+         </div>
+	 </div><! --/container -->
