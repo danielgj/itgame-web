@@ -30,51 +30,53 @@
                 
                 <div class="userBlock" ng-show="showBlock(1)">
                 
+                    <div class="alert alert-info text-center" role="alert">Empezamos, son sólo unos poco datos...</div>
+                    
                     <p>Introduce los datos básicos para crear tu usuario:</p>
                     <div class="alert alert-danger" ng-show="withError">{{errorMsg}}</div>
-                        <form role="form">
-                          <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" ng-model="register1.email">
-                          </div>
-                          <div class="form-group">
-                            <label for="email">Nickname</label>
-                            <input type="text" class="form-control" id="nickname" ng-model="register1.nick">
-                          </div>
-                          <div class="form-group">
-                            <label for="password">Contraseña</label>
-                            <input type="password" class="form-control" id="password1" ng-model="register1.password1">
-                          </div>
-                          <div class="form-group">
-                            <label for="password">Repite tu Contraseña</label>
-                            <input type="password" class="form-control" id="password2" ng-model="register1.password2">
-                          </div>
-                          <a ng-click="doRegister1()" class="btn btn-theme">Continuar</a>
-                        </form>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" ng-model="register1.email">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Nickname</label>
+                        <input type="text" class="form-control" id="nickname" ng-model="register1.nick">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" class="form-control" id="password1" ng-model="register1.password1">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Repite tu Contraseña</label>
+                        <input type="password" class="form-control" id="password2" ng-model="register1.password2">
+                    </div>
+                    <a ng-click="doRegister1()" class="btn btn-theme">Continuar</a>                    
                 </div>
                 
                 <div class="avatarBlock" ng-show="showBlock(2)">
+                    
+                    <div class="alert alert-info text-center" role="alert">¡Bien hecho! Ahora personaliza tu jugador...</div>
                 
                     <p>Elije tu avatar:</p>
                     
                     <div class="row">
                         <div class="col-lg-2">
-                            <img src="assets/img/portfolio/portfolio_01.jpg" class="img-responsive" alt="">
+                            <img src="assets/img/portfolio/portfolio_01.jpg" class="img-responsive" ng-class="{ 'selected': isAvatarSelected(1)}" ng-click="selectAvatar(1)">
                         </div>
                         <div class="col-lg-2">
-                            <img src="assets/img/portfolio/portfolio_02.jpg" class="img-responsive" alt="">
+                            <img src="assets/img/portfolio/portfolio_02.jpg" class="img-responsive" ng-class="{ 'selected': isAvatarSelected(2)}" ng-click="selectAvatar(2)">
                         </div>
                         <div class="col-lg-2">
-                            <img src="assets/img/portfolio/portfolio_03.jpg" class="img-responsive" alt="">
+                            <img src="assets/img/portfolio/portfolio_03.jpg" class="img-responsive" ng-class="{ 'selected': isAvatarSelected(3)}" ng-click="selectAvatar(3)">
                         </div>
                         <div class="col-lg-2">
-                            <img src="assets/img/portfolio/portfolio_04.jpg" class="img-responsive" alt="">
+                            <img src="assets/img/portfolio/portfolio_04.jpg" class="img-responsive" ng-class="{ 'selected': isAvatarSelected(4)}" ng-click="selectAvatar(4)">
                         </div>
                         <div class="col-lg-2">
-                            <img src="assets/img/portfolio/portfolio_05.jpg" class="img-responsive" alt="">
+                            <img src="assets/img/portfolio/portfolio_05.jpg" class="img-responsive" ng-class="{ 'selected': isAvatarSelected(5)}" ng-click="selectAvatar(5)">
                         </div>
                         <div class="col-lg-2">
-                            <img src="assets/img/portfolio/portfolio_06.jpg" class="img-responsive" alt="">
+                            <img src="assets/img/portfolio/portfolio_06.jpg" class="img-responsive" ng-class="{ 'selected': isAvatarSelected(6)}" ng-click="selectAvatar(6)">
                         </div>
                     </div>
                     
@@ -82,16 +84,16 @@
                     
                     <div class="row">
                         <div class="col-lg-2">
-                            <img src="assets/img/portfolio/portfolio_07.jpg" class="img-responsive" alt="">
+                            <img src="assets/img/portfolio/portfolio_07.jpg" class="img-responsive" ng-class="{ 'selected': isAvatarSelected(7)}" ng-click="selectAvatar(7)">
                         </div>
                         <div class="col-lg-2">
-                            <img src="assets/img/portfolio/portfolio_08.jpg" class="img-responsive" alt="">
+                            <img src="assets/img/portfolio/portfolio_08.jpg" class="img-responsive" ng-class="{ 'selected': isAvatarSelected(8)}" ng-click="selectAvatar(8)">
                         </div>
                         <div class="col-lg-2">
-                            <img src="assets/img/portfolio/portfolio_09.jpg" class="img-responsive" alt="">
+                            <img src="assets/img/portfolio/portfolio_09.jpg" class="img-responsive" ng-class="{ 'selected': isAvatarSelected(9)}" ng-click="selectAvatar(9)">
                         </div>
                         <div class="col-lg-2">
-                            <img src="assets/img/portfolio/portfolio_10.jpg" class="img-responsive" alt="">
+                            <img src="assets/img/portfolio/portfolio_10.jpg" class="img-responsive" ng-class="{ 'selected': isAvatarSelected(10)}" ng-click="selectAvatar(10)">
                         </div>
                         <div class="col-lg-2">
                         
@@ -108,14 +110,67 @@
                 </div>
                 
                 <div class="skillsBlock" ng-show="showBlock(3)">
+                    
+                    <div class="alert alert-info text-center" role="alert">¡Ayúdanos a configurar tu experiencia de juego!</div>
                 
-                    <p>Selecciona tus habilidades (determinarán a qué juegos puedes inscribirte):</p>
+                    <p>Selecciona tus habilidades de juego:</p>
+                    <div class="form-group">
+                        <label for="techs">Tecnologías que conoces</label>
+                        <select class="form-control" id="techs" ng-model="register3.techs" multiple>
+                            <option value="android">Android</option>
+                            <option value="ios">iOS</option>
+                            <option value="net">.NET</option>
+                            <option value="node">Node.js</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="skills">Habilidades que quieres potenciar</label><br />
+                        <label class="checkbox-inline">
+                          <input type="checkbox" id="checkboxEnLinea1" value="opcion_1"> 1
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="checkbox" id="checkboxEnLinea2" value="opcion_2"> 2
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="checkbox" id="checkboxEnLinea3" value="opcion_3"> 3
+                        </label>
+                    </div>
+                    
+                    
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <textarea class="form-control" id="techs" ng-model="register3.bio" placeholder="Describe a tu jugador" ></textarea>
+                    </div>
+                    
+                    
+                    <div class="spacing"></div>
+                    
+                    <a ng-click="doRegister3()" class="btn btn-theme">Continuar</a>
                 
                 </div>
                 
                 <div class="idsBlock" ng-show="showBlock(4)">
                 
-                    Introduce tus IDs
+                    <div class="alert alert-info text-center" role="alert">¡Ya casí está! Un último paso y podrás comenzar a jugar...</div>
+                    
+                    <p>Introduce tus IDs de usuario de los diferentes sistemas:</p>
+                    <div class="form-group">
+                        <label for="email">Usuario JIRA</label>
+                        <input type="email" class="form-control" id="email" ng-model="register4.jiraUser">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Usuario Gitlab</label>
+                        <input type="text" class="form-control" id="nickname" ng-model="register4.gitlabUser">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Usuario TFS</label>
+                        <input type="password" class="form-control" id="password1" ng-model="register4.tfsUser">
+                    </div>
+                    
+                    <div class="spacing"></div>
+                    
+                    <a ng-click="doRegister4()" class="btn btn-theme">Finalizar Registro</a>
                 
                 </div>
                 

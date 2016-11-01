@@ -120,3 +120,7 @@ h4.media-heading {
   .progressbar li.active + li:after {
       background-color: #00b3fe;
   }
+
+img.selected {
+    border: 4px solid #00b3fe; 
+}

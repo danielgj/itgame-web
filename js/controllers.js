@@ -99,6 +99,20 @@ itgameApp
     .controller('RegisterController', function($scope) {
     
         $scope.currentStep = 1;
+        $scope.selectedAvatar = 0;
+        
+        $scope.isAvatarSelected = function(id) {
+            return $scope.selectedAvatar == id;
+        }
+        
+        $scope.selectAvatar = function(id) {
+            
+            if($scope.selectedAvatar == id) {
+                $scope.selectedAvatar = 0;
+            } else {
+                $scope.selectedAvatar = id;
+            }
+        }
     
         $scope.showBlock = function(id) {
             return $scope.currentStep==id;
@@ -106,6 +120,18 @@ itgameApp
         
         $scope.navigateToBlock = function(id) {
             $scope.currentStep=id;
+        }
+        
+        $scope.doRegister1 = function() {
+            $scope.currentStep = 2;
+        }
+        
+        $scope.doRegister2 = function() {
+            $scope.currentStep = 3;
+        }
+        
+        $scope.doRegister3 = function() {
+            $scope.currentStep = 4;
         }
 
     })
