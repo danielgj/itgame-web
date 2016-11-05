@@ -1,4 +1,4 @@
-var itgameApp = angular.module("itgameApp", ["ngRoute","ui.bootstrap"]);
+var itgameApp = angular.module("itgameApp", ["ngRoute","ui.bootstrap",'ngTable']);
 
 //Route providers
 itgameApp.config(['$routeProvider',
@@ -51,7 +51,27 @@ itgameApp.config(['$routeProvider',
       when('/admin', {
         templateUrl: 'views/admin.html',
         controller: 'AdminController'
-      }).      
+      }).  
+      when('/admin/skills', {
+        templateUrl: 'views/admin-skills.html',
+        controller: 'AdminSkillsController'
+      }).
+      when('/admin/avatars', {
+        templateUrl: 'views/admin-avatars.html'
+      }).
+      when('/admin/levels', {
+        templateUrl: 'views/admin-levels.html',
+        controller: 'AdminLevelsController'
+      }).
+      when('/admin/achievements', {
+        templateUrl: 'views/admin-achievements.html'
+      }).
+      when('/admin/games', {
+        templateUrl: 'views/admin-games.html'
+      }).
+      when('/admin/players', {
+        templateUrl: 'views/admin-players.html'
+      }).
       when("/error",{
             templateUrl: 'views/error.html',
             controller: 'ErrorController'

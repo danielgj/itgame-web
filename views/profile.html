@@ -9,53 +9,145 @@
 	    </div> <!-- /container -->
 	</div><!-- /blue -->
 
-    <div class="container mtb">
-	 	<div class="row">
-	 	
-	 		<!-- Profile Info -->
-	 		<div class="col-lg-8">
-	 		
-                <p>Información de perfil</p>
-		 		
-			</div><! --/col-lg-8 -->
-	 		
-	 		
-	 		<! -- SIDEBAR -->
-	 		<div class="col-lg-4">
-		 		
-		 		<h4>Tus logros</h4>
-		 		<div class="hline"></div>
-					<ul class="popular-posts">
-		                <li>
-		                    <a href="#"><img src="assets/img/thumb01.jpg" alt="Popular Post"></a>
-		                    <p><a href="#">Lorem ipsum dolor sit amet consectetur adipiscing elit</a></p>
-		                    <em>Posted on 02/21/14</em>
-		                </li>
-		                <li>
-		                    <a href="#"><img src="assets/img/thumb02.jpg" alt="Popular Post"></a>
-		                    <p><a href="#">Lorem ipsum dolor sit amet consectetur adipiscing elit</a></p>
-		                    <em>Posted on 03/01/14</em>
-		                <li>
-		                    <a href="#"><img src="assets/img/thumb03.jpg" alt="Popular Post"></a>
-		                    <p><a href="#">Lorem ipsum dolor sit amet consectetur adipiscing elit</a></p>
-		                    <em>Posted on 05/16/14</em>
-		                </li>
-		                <li>
-		                    <a href="#"><img src="assets/img/thumb04.jpg" alt="Popular Post"></a>
-		                    <p><a href="#">Lorem ipsum dolor sit amet consectetur adipiscing elit</a></p>
-		                    <em>Posted on 05/16/14</em>
-		                </li>
-		            </ul>
-		            
-		 		<div class="spacing"></div>
+
+    <!--
+    <div id="profileHeader">
+        <img src="{{profileImg}}" class="avatar" alt="{{username}}"> {{username}}
+    </div>
                 
-                <h4>A qué juegas</h4>
-		 		<div class="hline"></div>
+    -->
+
+    <div class="container mtb">
+	 	<div class="row" ng-show="!shouldOnboard">
+            
+            <!-- Profile Info -->
+	 		<div class="col-lg-4">
+	 		
+                
+                    <div class="thumbnail">
+                      <img src="{{profileImg}}" alt="{{username}}"> 
+                      <div class="caption">
+                        <h3>{{username}}</h3>
+                        <p>
+                            <em>{{profile.bio}}</em>
+                            <br/>
+                            <span class="skillBadge" ng-repeat="s in profile.skills">{{s.name}}</span>
+                        </p>
+                          
+                        <p class="text-center">Nivel: {{profile.level}} ({{profile.points}} / 1000 XP)</p>
+                        <div class="progress">
+                          <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                            <span class="sr-only">60% Complete</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                
+                
+                    <div class="spacing"></div>
+                
+                    <h4>A qué juegas</h4>
+		 		    <div class="hline"></div>
 			 		<p><a href="#"><i class="fa fa-angle-right"></i> GPT</a> <span class="badge badge-theme pull-right">9</span></p>
 			 		<p><a href="#"><i class="fa fa-angle-right"></i> Clear Check</a> <span class="badge badge-theme pull-right">3</span></p>			 		
-
 		 		
-		 				 		
-	 		</div>
+			</div><! --/col-lg-4 -->
+            
+            <div class="col-lg-8">
+                
+                <h4 class="text-center">Aún no tienes ningún logro</h4>
+                
+
+                <div class="spacing"></div>
+            </div>
+                        	 		
 	 	</div><! --/row -->
+        
+        
+        
+        <!-- Onboarding Profile -->
+        <div class="row" ng-show="shouldOnboard">
+            <div class="col-lg-2"></div>
+	 		<div class="col-lg-8">
+	 			<div class="alert alert-danger" role="alert" ng-show="withError">{{errorMsg}}</div>
+                <div class="alert alert-info text-center" role="alert" ng-show="onBoardMsg!=''">{{onBoardMsg}}</div>
+                
+                
+                <div class="stepsContainer">
+                    <ul class="progressbar">
+                        <li ng-class="{ 'active': showBlock(1)}">Avatar</li>
+                        <li ng-class="{ 'active': showBlock(2)}">Habilidades</li>
+                        <li ng-class="{ 'active': showBlock(3)}">IDs</li>
+                    </ul>
+                </div>
+                
+                <div class="avatarBlock" ng-show="showBlock(1)">
+                    
+                    <p>Elije tu avatar:</p>
+                    
+                    <div class="row">
+                        <div class="col-lg-2 avatar-select-item" ng-repeat="a in defaultAvatars">
+                            <img src="{{urlBaseAvatar}}{{a.image}}" class="img-responsive" ng-class="{ 'selected': isAvatarSelected(a._id)}" ng-click="selectAvatar(a._id)">
+                        </div>
+                    </div>
+                    
+                    <div class="spacing"></div>
+                    
+                    <a ng-click="doOnBoarding1()" class="btn btn-theme">Continuar</a>
+                                        
+                </div>
+                
+                <div class="skillsBlock" ng-show="showBlock(2)">
+                    
+                    <p>Selecciona tus habilidades de juego:</p>
+                    <div class="form-group">
+                        <label for="skills">Habilidades que quieres potenciar</label><br />
+                        <select class="form-control" ng-model="userSkills" multiple>
+                            <option ng-repeat="s in skills" value="{{s._id}}">{{s.name}}</option>
+                        </select>
+                        </label>
+                    </div>
+                    
+                    
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <textarea class="form-control" id="techs" ng-model="bio" placeholder="Describe a tu jugador" ></textarea>
+                    </div>
+                    
+                    
+                    <div class="spacing"></div>
+                    
+                    <a ng-click="goToOnboardinStep(1)" class="btn btn-theme">Volver</a>
+                    <a ng-click="doOnBoarding2()" class="btn btn-theme">Continuar</a>
+                
+                </div>
+                
+                <div class="idsBlock" ng-show="showBlock(3)">
+                
+                    <p>Introduce tus IDs de usuario de los diferentes sistemas:</p>
+                    <div class="form-group">
+                        <label for="jiraUser">Usuario JIRA</label>
+                        <input type="text" class="form-control" id="jiraUser" ng-model="jiraUser">
+                    </div>
+                    <div class="form-group">
+                        <label for="gitlabUser">Usuario Gitlab</label>
+                        <input type="text" class="form-control" id="gitlabUser" ng-model="gitlabUser">
+                    </div>
+                    <div class="form-group">
+                        <label for="jenkisnsUser">Usuario Jenkins</label>
+                        <input type="text" class="form-control" id="jenkisnsUser" ng-model="jenkinsUser">
+                    </div>
+                    
+                    <div class="spacing"></div>
+                    
+                    <a ng-click="goToOnboardinStep(2)" class="btn btn-theme">Volver</a>
+                    <a ng-click="doOnBoarding3()" class="btn btn-theme">Crear Perfil</a>
+                
+                </div>
+                
+                
+			</div><! --/col-lg-8 -->
+	 		
+            <div class="col-lg-2"></div>
+        </div>
 	 </div><! --/container -->

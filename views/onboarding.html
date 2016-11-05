@@ -1,0 +1,136 @@
+
+	<!-- *****************************************************************************************************************
+	 BLUE WRAP
+	 ***************************************************************************************************************** -->
+	<div id="blue">
+	    <div class="container">
+			<div class="row">
+				<h3>Registro</h3>
+			</div><!-- /row -->
+	    </div> <!-- /container -->
+	</div><!-- /blue -->
+
+	 <!-- *****************************************************************************************************************
+	 CONTACT FORMS
+	 ***************************************************************************************************************** -->
+
+	 <div class="container mtb">
+	 	<div class="row">
+            <div class="col-lg-2"></div>
+	 		<div class="col-lg-8">
+	 			<div class="alert alert-danger" role="alert" ng-show="withError">{{errorMsg}}</div>
+                
+                <div class="stepsContainer">
+                    <ul class="progressbar">
+                        <li ng-class="{ 'active': showBlock(1)}" ng-click="navigateToBlock(1)">Usuario</li>
+                        <li ng-class="{ 'active': showBlock(2)}" ng-click="navigateToBlock(2)">Avatar</li>
+                        <li ng-class="{ 'active': showBlock(3)}" ng-click="navigateToBlock(3)">Habilidades</li>
+                        <li ng-class="{ 'active': showBlock(4)}" ng-click="navigateToBlock(4)">IDs</li>
+                    </ul>
+                </div>
+                
+                <div class="userBlock" ng-show="showBlock(1)">
+                
+                    <div class="alert alert-info text-center" role="alert">Empezamos, son sólo unos poco datos...</div>
+                    
+                    <p>Introduce los datos básicos para crear tu usuario:</p>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" ng-model="register1.email">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Nickname</label>
+                        <input type="text" class="form-control" id="nickname" ng-model="register1.username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" class="form-control" id="password1" ng-model="register1.password1">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Repite tu Contraseña</label>
+                        <input type="password" class="form-control" id="password2" ng-model="register1.password2">
+                    </div>
+                    <a ng-click="doRegister1()" class="btn btn-theme">Continuar</a>                    
+                </div>
+                
+                <div class="avatarBlock" ng-show="showBlock(2)">
+                    
+                    <div class="alert alert-info text-center" role="alert">¡Bien hecho! Ahora personaliza tu jugador...</div>
+                
+                    <p>Elije tu avatar:</p>
+                    
+                    <div class="row" ng-repeat="a in defaultAvatars">
+                        <div class="col-lg-2">
+                            <img src="{{urlBaseAvatar}}{{a.image}}" class="img-responsive" ng-class="{ 'selected': isAvatarSelected('{{a._id}}')}" ng-click="selectAvatar('{{a._id}}')">
+                        </div>
+                    </div>
+                    
+                    <div class="spacing"></div>
+                    
+                    <a ng-click="doRegister2()" class="btn btn-theme">Continuar</a>
+                                        
+                </div>
+                
+                <div class="skillsBlock" ng-show="showBlock(3)">
+                    
+                    <div class="alert alert-info text-center" role="alert">¡Ayúdanos a configurar tu experiencia de juego!</div>
+                
+                    <p>Selecciona tus habilidades de juego:</p>
+                    <div class="form-group">
+                        <label for="skills">Habilidades que quieres potenciar</label><br />
+                        <label class="checkbox-inline">
+                          <input type="checkbox" id="checkboxEnLinea1" value="opcion_1"> 1
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="checkbox" id="checkboxEnLinea2" value="opcion_2"> 2
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="checkbox" id="checkboxEnLinea3" value="opcion_3"> 3
+                        </label>
+                    </div>
+                    
+                    
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <textarea class="form-control" id="techs" ng-model="register3.bio" placeholder="Describe a tu jugador" ></textarea>
+                    </div>
+                    
+                    
+                    <div class="spacing"></div>
+                    
+                    <a ng-click="doRegister3()" class="btn btn-theme">Continuar</a>
+                
+                </div>
+                
+                <div class="idsBlock" ng-show="showBlock(4)">
+                
+                    <div class="alert alert-info text-center" role="alert">¡Ya casí está! Un último paso y podrás comenzar a jugar...</div>
+                    
+                    <p>Introduce tus IDs de usuario de los diferentes sistemas:</p>
+                    <div class="form-group">
+                        <label for="email">Usuario JIRA</label>
+                        <input type="email" class="form-control" id="email" ng-model="register4.jiraUser">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Usuario Gitlab</label>
+                        <input type="text" class="form-control" id="nickname" ng-model="register4.gitlabUser">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Usuario TFS</label>
+                        <input type="password" class="form-control" id="password1" ng-model="register4.tfsUser">
+                    </div>
+                    
+                    <div class="spacing"></div>
+                    
+                    <a ng-click="doRegister4()" class="btn btn-theme">Finalizar Registro</a>
+                
+                </div>
+                
+                
+			</div><! --/col-lg-8 -->
+	 		
+            <div class="col-lg-2"></div>
+	 	</div><! --/row -->
+	 </div><! --/container -->
+
+
