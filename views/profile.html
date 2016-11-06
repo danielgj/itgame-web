@@ -35,11 +35,11 @@
                         </p>
                           <br/>
                         <div class="progress">
-                          <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                            <span class="sr-only">60% Complete</span>
+                          <div class="progress-bar" role="progressbar" aria-valuenow="{{profile.points}}" aria-valuemin="0" aria-valuemax="{{profile.level.end}}" style="width: {{profile.completion}}%;">
+                            <span class="sr-only">{{profile.completion}}% Complete</span>
                           </div>
                         </div>
-                        <p class="text-center">Nivel: {{profile.level}} ({{profile.points}} / 1000 XP)</p>                        
+                        <p class="text-center">Nivel: {{profile.level.name}} ({{profile.points}} / {{profile.level.end}} XP)</p>                        
                       </div>
                     </div>
                 
@@ -85,13 +85,27 @@
                     
                     <p>Elije tu avatar:</p>
                     
-                    <div class="row">
-                        <div class="col-lg-2 avatar-select-item" ng-repeat="a in defaultAvatars">
-                            <img src="{{urlBaseAvatar}}{{a.image}}" class="img-responsive" ng-class="{ 'selected': isAvatarSelected(a._id)}" ng-click="selectAvatar(a._id)">
+                    <div class="form-group fg-line" data-ng-class="{'has-error': errorHorizontalImage}">
+                        <label for="horizontalImage">Imagen</label>
+                        <br/>        
+                        <div class="fileinput fileinput-new fileinputImage" data-provides="fileinput">
+                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" id="ImageFilePreview"></div>
+                            <div>
+                                <span class="btn btn-info btn-file">
+                                    <span class="fileinput-new">Selecciona una imagen</span>
+                                    <span class="fileinput-exists">Cambiar</span>
+                                    <input type="file" name="fileinputImage" file-model="avatarImageFile">
+                                </span>
+                                <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="spacing"></div>
+                    
+                    <p>Puedes elegir una foto tuya o crearte un avatar en cualquiera de las páginas disponibles en Internet como por ejemplo
+                        <a href="http://avatarmaker.com/" target="_blank">http://avatarmaker.com/</a>.
+                    </p>
                     
                     <a ng-click="doOnBoarding1()" class="btn btn-theme">Continuar</a>
                                         

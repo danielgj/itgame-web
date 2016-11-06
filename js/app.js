@@ -56,10 +56,6 @@ itgameApp.config(['$routeProvider',
         templateUrl: 'views/admin-skills.html',
         controller: 'AdminSkillsController'
       }).
-      when('/admin/avatars', {
-        templateUrl: 'views/admin-avatars.html',
-        controller: 'AdminAvatarsController'
-      }).
       when('/admin/levels', {
         templateUrl: 'views/admin-levels.html',
         controller: 'AdminLevelsController'

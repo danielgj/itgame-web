@@ -259,7 +259,6 @@ itgameApp
         
         Utils.checkLoggedUser($location, MenuService);
     
-        $scope.profileImg = "./assets/img/default_avatar.png";
         $scope.profile = {};
         $scope.shouldOnboard = false;
     
@@ -274,21 +273,12 @@ itgameApp
                         $scope.shouldOnboard = true;
                         
                         $scope.currentStep = 1;
-                        $scope.selectedAvatar = "";      
                         $scope.selectedSkills = [];
                         $scope.onBoardMsg = "Tómate unos minutos para completar tu perfil";
                         $scope.urlBaseAvatar = configService.url_avatar;
-
-
-                        avatarsService.getDefaultAvatars().then(function(d) { 
-                            if(!Utils.isUndefinedOrNull(d)) {
-
-                                if(d.status) {
-                                    $scope.defaultAvatars = d.data;                        
-                                }
-                            }
-                        });
-                        
+                        $scope.avatarImageFile = null;
+                        $('#ImageFilePreview').html('');
+                                
                         skillsService.getSkills().then(function(d) { 
                             if(!Utils.isUndefinedOrNull(d)) {
                                 if(d.status) {
@@ -296,19 +286,6 @@ itgameApp
                                 }
                             }
                         });
-
-                        $scope.isAvatarSelected = function(id) {
-                            return $scope.selectedAvatar == id;
-                        }
-
-                        $scope.selectAvatar = function(id) {
-
-                            if($scope.selectedAvatar == id) {
-                                $scope.selectedAvatar = "";                                
-                            } else {
-                                $scope.selectedAvatar = id;
-                            }
-                        }
 
                         $scope.showBlock = function(id) {
                             return $scope.currentStep==id;
@@ -320,35 +297,86 @@ itgameApp
                         
 
                         $scope.doOnBoarding1 = function() {
-                            $scope.currentStep= 2;
+                            
+                            //Validar que haya elegido Avatar
+                            var imageFile = $scope.avatarImageFile;
+                            if(!imageFile) {
+                                $scope.withError = true;
+                                $scope.errorMsg = "Selecciona un avatar";
+                            } else {
+                                $scope.withError = false;
+                                $scope.errorMsg = "";
+                                $scope.currentStep= 2;
+                            }
                         }
                         
                         $scope.doOnBoarding2 = function() {
-                            console.log($scope.userSkills);
-                            $scope.currentStep= 3;
+                            
+                            //Validar que haya elegido al menos una habilidad
+                            if($scope.userSkills==undefined || $scope.userSkills.length==0) {
+                                $scope.withError = true;
+                                $scope.errorMsg = "Selecciona al menos una habilidad";
+                            } else if($scope.bio== undefined || $scope.bio=="") {
+                                $scope.withError = true;
+                                $scope.errorMsg = "Descríbete como jugador";
+                            } else {
+                                $scope.withError = false;
+                                $scope.errorMsg = "";
+                                $scope.currentStep= 3;
+                            }
                         }
                         
                         $scope.doOnBoarding3 = function() {
                             
-                            var profileToCreate = {
-                                userId: $rootScope.user,
-                                avatar: $scope.selectedAvatar,
-                                skills: $scope.userSkills,
-                                bio: $scope.bio,
-                                jiraUser: $scope.jiraUser,
-                                gitlabUser: $scope.gitlabUser,
-                                jenkinsUser: $scope.jenkinsUser
+                            //Validar que haya introducido
+                            if($scope.jiraUser== undefined || $scope.jiraUser=="") {
+                                $scope.withError = true;
+                                $scope.errorMsg = "Descríbete como jugador";
+                            } else if($scope.gitlabUser== undefined || $scope.gitlabUser=="") {
+                                $scope.withError = true;
+                                $scope.errorMsg = "Descríbete como jugador";
+                            } else {
+                            
+                                var imageFile = $scope.avatarImageFile;
+            
+                                //Create                    
+                                var fd = new FormData();
+                                fd.append('userId', $rootScope.user);
+                                fd.append('skills', $scope.userSkills);
+                                fd.append('bio', $scope.bio);
+                                fd.append('jiraUser', $scope.jiraUser);
+                                fd.append('gitlabUser', $scope.gitlabUser);
+                                fd.append('jenkinsUser', $scope.jenkinsUser);
+                                fd.append('avatarImage', imageFile);
+                                $http.post(configService.url_api + 'userprofile/', fd, {
+                                    transformRequest: angular.identity,
+                                    headers: {
+                                        'Authorization': 'bearer ' + $rootScope.token,
+                                        'Content-Type': undefined
+                                    }
+                                })
+                                .success(function(){  
+
+                                    profileService.getUserProfile($rootScope.user).then(function(d) {
+                                        if(!Utils.isUndefinedOrNull(d)) {
+
+                                            if(d.status) {
+                                                $scope.profile = d.data;
+                                                $scope.shouldOnboard = false;
+                                                $scope.profileImg = configService.url_avatar + $scope.profile.avatar;
+                                            }
+                                        }
+                                    });
+
+                                })
+                                .error(function(){
+                                    $scope.inSaving = false;
+                                    $scope.withError = true;
+                                    $scope.errorMsg = "No se ha podido crear el perfil correctamente.";
+                                });
+                            
                             }
                             
-                            profileService.createUserProfile(profileToCreate).then(function(d) { 
-                                if(!Utils.isUndefinedOrNull(d)) {
-                                    if(d.status) {
-                                        $scope.profile = d.data;    
-                                        $scope.shouldOnboard = false;
-                                        $scope.profileImg = configService.url_avatar + $scope.profile.avatar;
-                                    }
-                                }
-                            });
                             
                         }
                         
@@ -357,7 +385,7 @@ itgameApp
                     } else {
                         $scope.shouldOnboard = false;
                         if(d.data.avatar && d.data.avatar!="") {
-                            $scope.profileImg = configService.url_avatar + $scope.profile.avatar.image;
+                            $scope.profileImg = configService.url_avatar + $scope.profile.avatar;
                         }
                     }
                 }
@@ -696,134 +724,6 @@ itgameApp
                     });
         }
     })
-
-    .controller('AdminAvatarsController', function($scope, $rootScope, $location, $http, MenuService, avatarsService, configService, $filter, ngTableParams, Utils) {
-        
-        Utils.checkLoggedAdmin($location, MenuService);
-    
-        $scope.urlBaseAvatar = configService.url_avatar;
-    
-        $scope.createEditTitle = "Nuevo Avatar";
-        $scope.inSaving = false;
-        $scope.withError = false;
-        $scope.errorMsg = "";
-        $scope.avatarToCreateEdit = {};
-        $scope.avatarToCreateEdit._id = '';        
-        $scope.avatarToCreateEdit.name = '';
-        $scope.avatarToCreateEdit.image = '';        
-        $scope.avatarImageFile = null;
-        $('#ImageFilePreview').html('');
-        
-    
-        avatarsService.getDefaultAvatars().then(function(d) { 
-            if(!Utils.isUndefinedOrNull(d)) {
-                if(d.status) {
-                    $scope.avatars=d.data;
-                }
-            }
-        });
-    
-    
-        $scope.loadForEdit = function(data) {
-            $scope.createEditTitle = 'Editar Avatar';
-            $scope.inSaving = false;
-            $scope.withError = false;
-            $scope.errorMsg = "";
-            $scope.avatarToCreateEdit._id = data._id;
-            $scope.avatarToCreateEdit.name = data.name;
-            $scope.avatarToCreateEdit.image = data.image;        
-        }
-    
-    
-        $scope.cancelEditCreate = function() {
-            $scope.createEditTitle = "Nuevo Avatar";
-            $scope.inSaving = false;
-            $scope.withError = false;
-            $scope.errorMsg = "";
-            $scope.levelToCreateEdit = {};
-            $scope.avatarToCreateEdit._id = '';        
-            $scope.avatarToCreateEdit.name = '';
-            $scope.avatarToCreateEdit.image = ''; 
-            if($scope.avatarImageFile) {
-                $('.fileinputImage').fileinput('clear')
-            }
-            $scope.avatarImageFile = null;
-        }
-        
-        $scope.createEditAvatar = function() {
-            
-            var imageFile = $scope.avatarImageFile;
-            var valid = $scope.avatarToCreateEdit.name!="" && imageFile;
-            
-            if(!valid) {
-                $scope.withError = true;
-                $scope.errorMsg = "Introduce el nombre y la imagen";
-            } else {
-            
-                $scope.inSaving = true;
-                if($scope.avatarToCreateEdit._id!="") {
-                    
-                    //Edit
-                    
-                } else {
-                    
-                    //Create                    
-                    var fd = new FormData();
-                    fd.append('name', $scope.avatarToCreateEdit.name);
-                    fd.append('avatarImage', imageFile);
-                    $http.post(configService.url_api + 'avatar/', fd, {
-                        transformRequest: angular.identity,
-                        headers: {
-                            'Authorization': 'bearer ' + $rootScope.token,
-                            'Content-Type': undefined
-                        }
-                    })
-                    .success(function(){  
-                        
-                        $scope.cancelEditCreate();
-                        avatarsService.getDefaultAvatars().then(function(d) { 
-                            if(!Utils.isUndefinedOrNull(d)) {
-                                if(d.status) {
-                                    $scope.avatars=d.data;
-                                }
-                            }
-                        });
-                        
-                    })
-                    .error(function(){
-                        $scope.inSaving = false;
-                        $scope.withError = true;
-                        $scope.errorMsg = "No se ha subido correctamente la imagen";
-                    });
-
-                    
-                    
-                    
-                }
-            }
-        }
-
-        $scope.delete = function(avatar) {
-            
-            $scope.inSaving = true;
-            avatarsService.deleteAvatar(avatar).then(function(d) {
-                $scope.inSaving = false;
-                    if(!Utils.isUndefinedOrNull(d)) {
-                        if(d.status) {
-                            $scope.cancelEditCreate();
-                            avatarsService.getDefaultAvatars().then(function(d) { 
-                                if(!Utils.isUndefinedOrNull(d)) {
-                                    if(d.status) {
-                                        $scope.avatars=d.data;
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
-        }
-    })
-    
 
     .controller('ErrorController', function($scope) {
 
