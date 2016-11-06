@@ -696,6 +696,133 @@ itgameApp
                     });
         }
     })
+
+    .controller('AdminAvatarsController', function($scope, $rootScope, $location, $http, MenuService, avatarsService, configService, $filter, ngTableParams, Utils) {
+        
+        Utils.checkLoggedAdmin($location, MenuService);
+    
+        $scope.urlBaseAvatar = configService.url_avatar;
+    
+        $scope.createEditTitle = "Nuevo Avatar";
+        $scope.inSaving = false;
+        $scope.withError = false;
+        $scope.errorMsg = "";
+        $scope.avatarToCreateEdit = {};
+        $scope.avatarToCreateEdit._id = '';        
+        $scope.avatarToCreateEdit.name = '';
+        $scope.avatarToCreateEdit.image = '';        
+        $scope.avatarImageFile = null;
+        $('#ImageFilePreview').html('');
+        
+    
+        avatarsService.getDefaultAvatars().then(function(d) { 
+            if(!Utils.isUndefinedOrNull(d)) {
+                if(d.status) {
+                    $scope.avatars=d.data;
+                }
+            }
+        });
+    
+    
+        $scope.loadForEdit = function(data) {
+            $scope.createEditTitle = 'Editar Avatar';
+            $scope.inSaving = false;
+            $scope.withError = false;
+            $scope.errorMsg = "";
+            $scope.avatarToCreateEdit._id = data._id;
+            $scope.avatarToCreateEdit.name = data.name;
+            $scope.avatarToCreateEdit.image = data.image;        
+        }
+    
+    
+        $scope.cancelEditCreate = function() {
+            $scope.createEditTitle = "Nuevo Avatar";
+            $scope.inSaving = false;
+            $scope.withError = false;
+            $scope.errorMsg = "";
+            $scope.levelToCreateEdit = {};
+            $scope.avatarToCreateEdit._id = '';        
+            $scope.avatarToCreateEdit.name = '';
+            $scope.avatarToCreateEdit.image = ''; 
+            if($scope.avatarImageFile) {
+                $('.fileinputImage').fileinput('clear')
+            }
+            $scope.avatarImageFile = null;
+        }
+        
+        $scope.createEditAvatar = function() {
+            
+            var imageFile = $scope.avatarImageFile;
+            var valid = $scope.avatarToCreateEdit.name!="" && imageFile;
+            
+            if(!valid) {
+                $scope.withError = true;
+                $scope.errorMsg = "Introduce el nombre y la imagen";
+            } else {
+            
+                $scope.inSaving = true;
+                if($scope.avatarToCreateEdit._id!="") {
+                    
+                    //Edit
+                    
+                } else {
+                    
+                    //Create                    
+                    var fd = new FormData();
+                    fd.append('name', $scope.avatarToCreateEdit.name);
+                    fd.append('avatarImage', imageFile);
+                    $http.post(configService.url_api + 'avatar/', fd, {
+                        transformRequest: angular.identity,
+                        headers: {
+                            'Authorization': 'bearer ' + $rootScope.token,
+                            'Content-Type': undefined
+                        }
+                    })
+                    .success(function(){  
+                        
+                        $scope.cancelEditCreate();
+                        avatarsService.getDefaultAvatars().then(function(d) { 
+                            if(!Utils.isUndefinedOrNull(d)) {
+                                if(d.status) {
+                                    $scope.avatars=d.data;
+                                }
+                            }
+                        });
+                        
+                    })
+                    .error(function(){
+                        $scope.inSaving = false;
+                        $scope.withError = true;
+                        $scope.errorMsg = "No se ha subido correctamente la imagen";
+                    });
+
+                    
+                    
+                    
+                }
+            }
+        }
+
+        $scope.delete = function(avatar) {
+            
+            $scope.inSaving = true;
+            avatarsService.deleteAvatar(avatar).then(function(d) {
+                $scope.inSaving = false;
+                    if(!Utils.isUndefinedOrNull(d)) {
+                        if(d.status) {
+                            $scope.cancelEditCreate();
+                            avatarsService.getDefaultAvatars().then(function(d) { 
+                                if(!Utils.isUndefinedOrNull(d)) {
+                                    if(d.status) {
+                                        $scope.avatars=d.data;
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+        }
+    })
     
 
     .controller('ErrorController', function($scope) {

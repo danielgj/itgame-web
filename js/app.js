@@ -57,7 +57,8 @@ itgameApp.config(['$routeProvider',
         controller: 'AdminSkillsController'
       }).
       when('/admin/avatars', {
-        templateUrl: 'views/admin-avatars.html'
+        templateUrl: 'views/admin-avatars.html',
+        controller: 'AdminAvatarsController'
       }).
       when('/admin/levels', {
         templateUrl: 'views/admin-levels.html',
@@ -81,3 +82,23 @@ itgameApp.config(['$routeProvider',
       });
   }
 ]);
+
+itgameApp
+    //
+    // File Input
+    //
+    .directive('fileModel', ['$parse', function ($parse) {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                var model = $parse(attrs.fileModel);
+                var modelSetter = model.assign;
+
+                element.bind('change', function(){
+                    scope.$apply(function(){
+                        modelSetter(scope, element[0].files[0]);
+                    });
+                });
+            }
+        };
+    }]);

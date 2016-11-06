@@ -88,7 +88,29 @@ itgameApp
                     'status': false,
                     'data': "Error inexperado" };                
             });
+          },
+          deleteAvatar: function(avatar) {
+            
+                return $http({
+                  method: 'DELETE',
+                  url: configService.url_api + 'avatar/' + avatar._id,
+                  headers: {
+                    "Accept": "application/json;charset=utf-8",
+                    "Authorization": "bearer " + $rootScope.token
+                  },
+                  dataType:"json"
+            }).then(function(obj) {                    
+                return {
+                    'status': true,
+                    'data': obj.data
+                };
+            }).catch(function(err) {                
+                return {
+                    'status': false,
+                    'data': "Error inexperado" };                
+            });
           }
+
         };
     
         return service;
