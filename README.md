@@ -1,4 +1,4 @@
-#My IT Game Web interface
+# My IT Game Web interface
 
 Web interface for a Gamification Platform to learn and track Continuous Itegration practices.
 
